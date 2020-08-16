@@ -10,7 +10,7 @@ const client = require('twilio')(accountSid, authToken);
 
 client.calls
       .create({
-         url: 'http://demo.twilio.com/docs/voice.xml',
+         twiml: '<Response><Say>Hello world</Say></Response>',
          to: '+447740984037',
          from: '+12056497881'
        })
