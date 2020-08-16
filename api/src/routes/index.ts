@@ -23,9 +23,10 @@ router.post('/call', async (req: Request, res: Response) => {
     //console.log(`telno: ${telno}`)
     try {
         const callId = await callNumber(telno);
-        return res.status(OK).send(callId);
+        return res.status(OK).send(JSON.stringify({callId:callId}));
     } catch (e) {
-        return res.status(500).send(new Error(e.toString()))
+        console.log(e.toString())
+        return res.status(500).send(JSON.stringify({err:e.toString()}))
     }
 });
 

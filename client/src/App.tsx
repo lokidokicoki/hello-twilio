@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme)=>({
 function App() {
   const classes = useStyles();
   const [telno, setTelno] = useState('');
-  const form = useRef<HTMLFormElement>(null);
+  const [result, setResult] = useState('');
+    const form = useRef<HTMLFormElement>(null);
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
     setTelno(e.target.value);
@@ -36,11 +37,17 @@ function App() {
     // coerce formdata to by teh right type, eugh
     //TODO: fix this to use the actual form
     const data = new FormData(e.currentTarget);//form.current as unknown as HTMLFormElement)
+
     fetch(`http://localhost:9000/api/call`, {
       method:'POST',
       body: JSON.stringify({telno}),
       headers: { 'Content-Type': 'application/json' },
-    });
+    })
+    .then(res => res.json())
+    .then(json => setResult(`Call ID: ${json.callId}`))
+    //.catch(e => setResult(e.toString()));
+    .catch(e => setResult('Error'));
+
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -54,6 +61,8 @@ function App() {
           <TextField variant="outlined" fullWidth margin="normal" required name="telno" label="Enter phone number" value={telno} onChange={handleChange} type="text" placeholder="e.g. +447740984037"/>
         <Button variant="contained" fullWidth color="primary" className={classes.submit} type="submit" value="Submit">Submit</Button>
         </form>
+
+        <p>{result}</p>
       </div>
     </Container>
   );
