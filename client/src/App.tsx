@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -26,12 +26,21 @@ const useStyles = makeStyles((theme)=>({
 function App() {
   const classes = useStyles();
   const [telno, setTelno] = useState('');
+  const form = useRef<HTMLFormElement>(null);
+
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
     setTelno(e.target.value);
   }
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(`number: ${telno}`)
+    // coerce formdata to by teh right type, eugh
+    //TODO: fix this to use the actual form
+    const data = new FormData(e.currentTarget);//form.current as unknown as HTMLFormElement)
+    fetch(`http://localhost:9000/api/call`, {
+      method:'POST',
+      body: JSON.stringify({telno}),
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -41,7 +50,7 @@ function App() {
       <Typography component="h1" variant="h5">
         Hello Twilio
       </Typography>
-        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <form ref={form} className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField variant="outlined" fullWidth margin="normal" required name="telno" label="Enter phone number" value={telno} onChange={handleChange} type="text" placeholder="e.g. +447740984037"/>
         <Button variant="contained" fullWidth color="primary" className={classes.submit} type="submit" value="Submit">Submit</Button>
         </form>
