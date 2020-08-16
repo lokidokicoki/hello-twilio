@@ -3,6 +3,8 @@ import { BAD_REQUEST, OK } from 'http-status-codes';
 
 import { paramMissingError } from '@shared/constants';
 
+import { callNumber } from '../services/call'
+
 // Init router and path
 const router = Router();
 
@@ -18,8 +20,13 @@ router.post('/call', async (req: Request, res: Response) => {
         });
     }
     //await make the the call
-    console.log(`telno: ${telno}`)
-    return res.status(OK).end();
+    //console.log(`telno: ${telno}`)
+    try {
+        const callId = await callNumber(telno);
+        return res.status(OK).send(callId);
+    } catch (e) {
+        return res.status(500).send(new Error(e.toString()))
+    }
 });
 
 // Export the base-router
