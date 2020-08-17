@@ -3,7 +3,7 @@ import { BAD_REQUEST, OK } from 'http-status-codes';
 
 import { paramMissingError } from '@shared/constants';
 
-import { callNumber } from '@services/call'
+import { callNumber } from '@entities/call';
 
 // Init router and path
 const router = Router();
