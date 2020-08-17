@@ -40,21 +40,28 @@ function App() {
     //TODO: fix this to use the actual form
     const data = new FormData(e.currentTarget);//form.current as unknown as HTMLFormElement)
 
-    axios.post(`http://localhost:9000/api/call`, 
-    //axios.post(`http://52.215.206.112/api/call`, 
+    //axios.post(`http://localhost:9000/api/call`, 
+    axios.post(`http://52.215.206.112/api/call`, 
       {telno}
     )
     .then(json => setResult(`Call ID: ${json.data.callId}`))
     .catch(e => {
       let msg:string;
       if(e.response){
-        msg = e.response.data;
+        console.log(`err resp: `, e.response.data)
+        msg = e.response.data.err;
       }else if (e.request){
+        console.log(`err req: `, e.request)
         msg = e.request;
-      }else{
+      }else if (e.message){
+        console.log(`err msg`, e.message)
         msg = e.message;
-      }
+      }else{
+
       console.log(`conf:`, e.config);
+      msg = e.config;
+      }
+
       setResult(msg);
     });
 
