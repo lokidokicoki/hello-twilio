@@ -26,7 +26,7 @@ router.post('/call', async (req: Request, res: Response) => {
         return res.status(OK).send(JSON.stringify({callId:callId}));
     } catch (e) {
         console.log(e.toString())
-        return res.status(500).send(JSON.stringify({err:e.toString()}))
+        return res.status(500).send(e.toString())
     }
 });
 
