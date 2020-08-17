@@ -9,7 +9,7 @@ const fromNumber = '+12056497881';
 export const callNumber = async (telno: string): Promise<string> => {
     const call = await client.calls.create({
         twiml: '<Response><Say>Hello</Say></Response>',
-        to: telno,//'+447740984037',
+        to: telno,
         from: fromNumber
     });
 
