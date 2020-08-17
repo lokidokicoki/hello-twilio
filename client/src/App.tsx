@@ -38,7 +38,7 @@ function App() {
     //TODO: fix this to use the actual form
     const data = new FormData(e.currentTarget);//form.current as unknown as HTMLFormElement)
 
-    fetch(`http://localhost:9000/api/call`, {
+    fetch(`http://52.215.206.112/api/call`, {
       method:'POST',
       body: JSON.stringify({telno}),
       headers: { 'Content-Type': 'application/json' },
