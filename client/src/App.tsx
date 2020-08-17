@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme)=>({
   paper:{
@@ -32,21 +33,30 @@ function App() {
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
     setTelno(e.target.value);
   }
+  
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // coerce formdata to by teh right type, eugh
+    // coerce formdata to by the right type, eugh
     //TODO: fix this to use the actual form
     const data = new FormData(e.currentTarget);//form.current as unknown as HTMLFormElement)
 
-    fetch(`http://52.215.206.112/api/call`, {
-      method:'POST',
-      body: JSON.stringify({telno}),
-      headers: { 'Content-Type': 'application/json' },
-    })
-    .then(res => res.json())
-    .then(json => setResult(`Call ID: ${json.callId}`))
-    //.catch(e => setResult(e.toString()));
-    .catch(e => setResult('Error'));
+    axios.post(`http://localhost:9000/api/call`, 
+    //axios.post(`http://52.215.206.112/api/call`, 
+      {telno}
+    )
+    .then(json => setResult(`Call ID: ${json.data.callId}`))
+    .catch(e => {
+      let msg:string;
+      if(e.response){
+        msg = e.response.data;
+      }else if (e.request){
+        msg = e.request;
+      }else{
+        msg = e.message;
+      }
+      console.log(`conf:`, e.config);
+      setResult(msg);
+    });
 
   }
   return (
