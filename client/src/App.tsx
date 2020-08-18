@@ -36,9 +36,6 @@ function App() {
   
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // coerce formdata to by the right type, eugh
-    //TODO: fix this to use the actual form
-    const data = new FormData(e.currentTarget);//form.current as unknown as HTMLFormElement)
 
     //axios.post(`http://localhost:9000/api/call`, 
     axios.post(`http://52.215.206.112/api/call`, 
